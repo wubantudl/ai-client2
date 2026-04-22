@@ -26,19 +26,14 @@ jobs:
       - name: Install dependencies
         run: npm install
       
-      - name: Build frontend
-        run: npm run build
-      
-      - name: Build Rust
-        run: |
-          cd src-tauri
-          cargo build --release
+      - name: Build portable exe
+        run: npx tauri build --no-bundle
       
       - name: Create portable package
         run: |
           mkdir portable
           cp src-tauri/target/release/ai-client.exe portable/
-          Compress-Archive -Path portable -DestinationPath AI-Client-portable.zip
+          Compress-Archive -Path portable/* -DestinationPath AI-Client-portable.zip
       
       - name: Upload artifact
         uses: actions/upload-artifact@v4
